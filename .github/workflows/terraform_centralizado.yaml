@@ -27,12 +27,7 @@ jobs:
   jobs_terraform:
     name: "CI/CD centralizado de Terraform"
     runs-on: ${{ inputs.os_version }}
-    env:
-      TF_WORKING_DIR: 'terraform'
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ env.TF_WORKING_DIR }}
+
     steps:
       - name: checkout
         uses: actions/checkout@v2
