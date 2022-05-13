@@ -1,0 +1,65 @@
+name: "CI/CD centralizado de Terraform"
+
+on:
+  workflow_call:
+    inputs:
+      tf_version:
+        description: "Versão do terraform"
+        required: false
+        type: string
+        default: '1.0.0'
+      os_version:
+        description: "Versão do sistema operacional"
+        required: false
+        default: "ubuntu-20.04"
+        type: string
+    secrets:
+      aws_access_key_id:
+        required: true
+      aws_secret_access_key:
+        required: true
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ inputs.aws_access_key_id }}
+  AWS_SECRET_ACCESS_KEY : ${{ inputs.aws_secret_access_key }}
+
+jobs:
+  jobs_terraform:
+    name: "CI/CD centralizado de Terraform"
+    runs-on: ${{ inputs.os_version }}
+    env:
+      TF_WORKING_DIR: 'terraform'
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.TF_WORKING_DIR }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ inputs.tf_version }}
+
+      - name: Terraform format
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Terraform init
+        id: init
+        run: terraform init
+
+      - name: Terraform validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform plan
+        id: plan
+        if: github.event_name == 'push'
+        run: terraform plan -lock=false
+        continue-on-error: false
+
+      - name: Terraform apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -lock=false
