@@ -4,6 +4,8 @@ Github Actions para ser reutilizado nos projetos de Terraform. Faz a validação
 - terraform init
 - terraform fmt
 - terraform validate
+- validação tfsec
+- terraform plan
 - terraform apply
 
 ## Inputs
@@ -21,7 +23,7 @@ Criar a seguintes estrutura de diretórios:
 Utilize o exemplo abaixo para seu pipeline de CI:
 
 ```yaml
-name: "Terraform Valida Modulo"
+name: "Pipe Terraform"
 on:
   push:
     branches:
@@ -29,7 +31,7 @@ on:
   pull_request:
 jobs:
   terraform:
-      uses: "yagoalmeida/cicd_tf_centralizado/.github/workflows/terraform_centralizado.yaml@v1"
+      uses: "yagoalmeida/cicd_tf_centralizado/.github/workflows/terraform_centralizado.yaml@main"
       with: 
         tf_version: "1.0.0"
         os_version: "ubuntu-20.04"
