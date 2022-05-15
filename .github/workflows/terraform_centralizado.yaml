@@ -13,6 +13,11 @@ on:
         required: false
         default: "ubuntu-20.04"
         type: string
+      apply_enabled:
+        description: "Flag utilizada para habilitar o step de apply"
+        required: false
+        default: false
+        type: boolean
     secrets:
       aws_access_key_id:
         required: true
@@ -62,5 +67,5 @@ jobs:
 
       - name: Terraform apply
         id: apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: ${{ apply_enabled }}
         run: terraform apply -auto-approve -lock=false
