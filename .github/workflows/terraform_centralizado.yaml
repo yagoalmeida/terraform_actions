@@ -52,7 +52,7 @@ jobs:
       - name: Validação do tfsec
         id: tfsec
         run: |
-          docker run --rm -v $PWD:/app -w /app tfsec/tfsec .
+          docker run --rm -v $PWD:/app -w /app aquasec/tfsec .
 
       - name: Terraform plan
         id: plan
