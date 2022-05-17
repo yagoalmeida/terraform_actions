@@ -62,7 +62,11 @@ jobs:
       - name: Terraform init with backend
         id: init_bucket
         if: ${{inputs.use_state_bucket}}
-        run: terraform init -backend-config="bucket=${{ inputs.bucket_name }}" -backend-config="key=${{ inputs.key_tf_state }}.tfstate" -backend-config="dynamodb_table=${{ inputs.dynamodb_table }}"
+        run: | 
+          terraform init \
+          -backend-config="bucket=${{ inputs.bucket_name }}" \
+          -backend-config="key=${{ inputs.key_tf_state }}.tfstate" \
+          -backend-config="dynamodb_table=${{ inputs.dynamodb_table }}"
         
       - name: Terraform validate
         id: validate
