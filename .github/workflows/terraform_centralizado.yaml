@@ -13,6 +13,19 @@ on:
         required: false
         default: "ubuntu-20.04"
         type: string
+      use_state_bucket:
+        description: "Flag para armazenar estados em um bucket"
+        default: false
+        type: boolean
+        required: false
+      bucket_name:
+        type: string
+      key_tf_state:
+        type: string
+        default: ${{ github.event.repository.full_name }}
+      dynamodb_table:
+        type: string
+        
     secrets:
       aws_access_key_id:
         required: true
@@ -43,8 +56,14 @@ jobs:
 
       - name: Terraform init
         id: init
+        if: ${{!inputs.use_state_bucket}}
         run: terraform init
 
+      - name: Terraform init
+        id: init_bucket
+        if: ${{inputs.use_state_bucket}}
+        run: terraform init -backend-config="bucket=${{ inputs.bucket_name }}" -backend-config="key=${{ inputs.key_tf_state }}.tfstate" -backend-config="dynamodb_table=${{ inputs.dynamodb_table }}"
+        
       - name: Terraform validate
         id: validate
         run: terraform validate -no-color
