@@ -25,6 +25,7 @@ on:
         default: ${{ github.event.repository.full_name }}
       dynamodb_table:
         type: string
+        default: "terraform-lock"
         
     secrets:
       aws_access_key_id:
