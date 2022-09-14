@@ -46,7 +46,6 @@ env:
 
 jobs:
   jobs_terraform:
-    permissions: write-all
     name: "CI/CD centralizado de Terraform"
     runs-on: ${{ inputs.os_version }}
     steps:
