@@ -43,7 +43,6 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
   AWS_SECRET_ACCESS_KEY : ${{ secrets.aws_secret_access_key }}
-  WORKING_DIRECTORY: .
 
 jobs:
   jobs_terraform:
@@ -102,8 +101,7 @@ jobs:
       - name: Generate Infracost JSON
         id: generate_infracost
         if: ${{inputs.use_infracost}}
-        run: infracost breakdown --path plan.json --format json --out-file /tmp/infracost.json
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: infracost breakdown --path=. --format json --out-file infracost.json
 
       - name: Post Infracost comment
         id: post_infracost
