@@ -48,9 +48,6 @@ jobs:
   jobs_terraform:
     name: "CI/CD centralizado de Terraform"
     runs-on: ${{ inputs.os_version }}
-    permissions:
-      contents: read
-      pull-requests: write
     steps:
       - name: checkout
         uses: actions/checkout@v2
