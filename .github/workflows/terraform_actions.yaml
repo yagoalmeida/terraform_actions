@@ -107,7 +107,7 @@ jobs:
 
       - name: Post Infracost comment
         id: post_infracost
-        if: github.event_name == 'pull_request' &&  ${{inputs.use_infracost}}
+        if: github.event_name == 'pull_request'
         run: |
           infracost comment github --path infracost.json \
                                    --repo $GITHUB_REPOSITORY \
