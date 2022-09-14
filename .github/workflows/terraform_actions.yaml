@@ -37,11 +37,13 @@ on:
         required: true
       aws_secret_access_key:
         required: true
+      infracost_api_key:
+        required: true
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
   AWS_SECRET_ACCESS_KEY : ${{ secrets.aws_secret_access_key }}
-  WORKING_DIRECTORY: /
+  WORKING_DIRECTORY: .
 
 jobs:
   jobs_terraform:
@@ -95,7 +97,7 @@ jobs:
         if: ${{inputs.use_infracost}}
         uses: infracost/actions/setup@v1
         with:
-          api-key: ${{ secrets.INFRACOST_API_KEY }}
+          api-key: ${{ secrets.infracost_api_key }}
 
       - name: Generate Infracost JSON
         id: generate_infracost
