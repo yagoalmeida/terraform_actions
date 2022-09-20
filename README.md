@@ -1,5 +1,5 @@
 # Terraform CI/CD centralizado
-Github Actions para ser reutilizado nos projetos de Terraform. Faz a validação da sintaxe do código terraform. 
+Github Actions para ser reutilizado nos projetos de Terraform, a pipeline faz a validação da sintaxe do código terraform, gera alterações previstas utilizando o terraform plan, efetua validações de segurança, efetua cálculo estimado do custo de infraestrutura e cria/altera recursos em sua conta da AWS. 
 
 - terraform init
 - terraform init with backend
