@@ -31,7 +31,11 @@ on:
         default: false
         type: boolean
         required: false
-        
+      destroy:
+        description: "Flag utilizada para destruir infraestrutura"
+        default: false
+        required: false
+        type: boolean
     secrets:
       aws_access_key_id:
         required: true
@@ -86,10 +90,16 @@ jobs:
 
       - name: Terraform plan
         id: plan
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && ${{!inputs.use_infracost}}
         run: terraform plan
         continue-on-error: false
 
+      - name: Terraform plan destroy
+        id: plan_destroy
+        if: github.event_name == 'push' && ${{inputs.use_infracost}}
+        run: terraform plan -destroy
+        continue-on-error: false
+        
       - name: Setup Infracost
         id: setup_infracost
         if: ${{inputs.use_infracost}}
@@ -114,6 +124,11 @@ jobs:
 
       - name: Terraform apply
         id: apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{!inputs.use_infracost}}
         run: terraform apply -auto-approve
+        
+      - name: Terraform apply destroy
+        id: apply_destroy
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{inputs.use_infracost}}
+        run: terraform apply -destroy -auto-approve
         
