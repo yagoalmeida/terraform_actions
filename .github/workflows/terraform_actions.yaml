@@ -90,13 +90,13 @@ jobs:
 
       - name: Terraform plan
         id: plan
-        if: github.event_name == 'push' && ${{!inputs.use_infracost}}
+        if: github.event_name == 'push' && ${{!inputs.destroy}}
         run: terraform plan
         continue-on-error: false
 
       - name: Terraform plan destroy
         id: plan_destroy
-        if: github.event_name == 'push' && ${{inputs.use_infracost}}
+        if: github.event_name == 'push' && ${{inputs.destroy}}
         run: terraform plan -destroy
         continue-on-error: false
         
@@ -124,11 +124,11 @@ jobs:
 
       - name: Terraform apply
         id: apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{!inputs.use_infracost}}
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{!inputs.destroy}}
         run: terraform apply -auto-approve
         
       - name: Terraform apply destroy
         id: apply_destroy
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{inputs.use_infracost}}
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{inputs.destroy}}
         run: terraform apply -destroy -auto-approve
         
